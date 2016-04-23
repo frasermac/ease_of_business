@@ -139,7 +139,7 @@ function updateNewVisualization() {
     /* Render the scales based on the new data */
     var x = d3.scale.linear()
         .range([0, width])
-        .domain([0, max_DTF]);
+        .domain([0, 100]);
 
     var y = d3.scale.linear()
         .range([height, 0])
@@ -148,7 +148,8 @@ function updateNewVisualization() {
     ///* Render the axes based on the new data */
     var xAxis = d3.svg.axis()
         .scale(x)
-        .orient("bottom");
+        .orient("bottom")
+        .tickValues([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]);
 
     var yAxis = d3.svg.axis()
         .scale(y)
