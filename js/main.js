@@ -6,7 +6,8 @@ var LifeExpectancyData = [];
 
 // SELECTION variables (super-global)
 var country = "AFG";
-var year = 2015;
+var year = new Date("01-01-2015");
+console.log(year);
 var metrics = "corruption";
 
 // Load data simultaneously
@@ -23,7 +24,7 @@ function loadData(error, data1, data2, data3, data4) {
     else {
         // Doing Business data
         data1.forEach(function (d) {
-            d.Calendar_Year = +d.Calendar_Year;
+            d.Calendar_Year = formatDate.parse(d.Calendar_Year);
             d.Overall_DTF = +d.Overall_DTF;
             d.SB = +d.SB;
             d.DwCP = +d.DwCP;
@@ -74,8 +75,9 @@ function loadData(error, data1, data2, data3, data4) {
 
         //test();
 
-        // Call choropleth
+        // Call graphs
         drawChoropleth(DBData);
+        drawScatter(DBData, MigrationData, CorruptionData, LifeExpectancyData);
     }
 }
 
