@@ -106,9 +106,12 @@ function updateChoropleth(){
             var value;
             var result = "silver";
             for (i=0;i<DBData.length; i++) {
-                if (DBData[i].Country_Code == d.id && DBData[i].Calendar_Year == year) {
-                    value = DBData[i].Overall_DTF;
-                    result = color(value);
+                if (DBData[i].Country_Code == d.id) {
+                    if ((DBData[i].Calendar_Year - year) == 0) {
+                        value = DBData[i].Overall_DTF;
+                        result = color(value);
+                    }
+
                 }
             }
             return result;
