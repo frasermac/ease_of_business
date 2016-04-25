@@ -41,35 +41,35 @@ function loadData(error, data1, data2, data3, data4) {
 
         // Migration data
         data2.forEach(function (d) {
-            d.CY2007 = +d.CY2007;
-            d.CY2012 = +d.CY2012;
+            d[2007] = parseInt(d[2007].replace(/,/g,''));
+            d[2012] = parseInt(d[2012].replace(/,/g,''));
         });
         MigrationData = data2;
 
         // Corruption data
         data3.forEach(function (d) {
-            d.CY2012 =+d.CY2012;
-            d.CY2013 =+d.CY2013;
-            d.CY2014 =+d.CY2014;
-            d.CY2015 =+d.CY2015;
+            d[2012] =+d[2012];
+            d[2013] =+d[2013];
+            d[2014] =+d[2014];
+            d[2015] =+d[2015];
             d.Transparency_Rank =+d.Transparency_Rank;
         });
         CorruptionData = data3;
 
         // Life Expectancy data
         data4.forEach(function (d) {
-            d.CY2003 =+d.CY2003;
-            d.CY2004 =+d.CY2004;
-            d.CY2005 =+d.CY2005;
-            d.CY2006 =+d.CY2006;
-            d.CY2007 =+d.CY2007;
-            d.CY2008 =+d.CY2008;
-            d.CY2009 =+d.CY2009;
-            d.CY2010 =+d.CY2010;
-            d.CY2011 =+d.CY2011;
-            d.CY2012 =+d.CY2012;
-            d.CY2013 =+d.CY2013;
-            d.CY2014 =+d.CY2014;
+            d[2003] =+d[2003];
+            d[2004] =+d[2004];
+            d[2005] =+d[2005];
+            d[2006] =+d[2006];
+            d[2007] =+d[2007];
+            d[2008] =+d[2008];
+            d[2009] =+d[2009];
+            d[2010] =+d[2010];
+            d[2011] =+d[2011];
+            d[2012] =+d[2012];
+            d[2013] =+d[2013];
+            d[2014] =+d[2014];
         });
         LifeExpectancyData = data4;
 
@@ -93,8 +93,8 @@ function test() {
     // Doing Business data
     for(i=0; i<DBData.length; i++)
     {
-            if (DBData[i].Country_Code == country && DBData[i].Calendar_Year == year)
-                console.log("DB item:",DBData[i])
+        if (DBData[i].Country_Code == country && DBData[i].Calendar_Year == year)
+            console.log("DB item:",DBData[i])
     }
 
     // Migration data

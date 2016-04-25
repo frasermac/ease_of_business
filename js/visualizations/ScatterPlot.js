@@ -3,7 +3,7 @@
 
 // SVG drawing area
 
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
+var margin = {top: 20, right: 20, bottom: 30, left: 80},
     width = 500 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 
@@ -18,52 +18,69 @@ var svg = d3.select("#scatter")
 // Date parser (https://github.com/mbostock/d3/wiki/Time-Formatting)
 var formatDate = d3.time.format("%Y");
 
-
-var bizData = [];
 var lifeData = [];
 var selectedYearArray = [];
+var secondMetricData;
+var fraserTestArray = [];
+var bizDate;
 
 
 // Assign the loaded data values to local storage variables
 function drawScatter(DBData, MigrationData, CorruptionData, LifeExpectancyData) {
 
-    bizData = d3.nest()
-        .key(function(d) { return d.Calendar_Year; })
-        .entries(DBData);
 
     lifeData = d3.nest()
         .key(function(d) { return d.Country_Code ; })
         .entries(LifeExpectancyData);
 
+
     // Draw the visualization for the first time
     populateDatepicker();
-    updateYearArray();
-    updateNewVisualization();
+    updateScatter();
 }
 
 
 function populateDatepicker() {
     // Fill up the dropdown lists with years that are available for both Ease of Doing Business AND the filterMetric
 
-    var filterMetric = d3.select("#dataFilter").property("value");
+    var availableYears = [];
+    var yearDropdown = document.getElementById("metricYear");
+
+    // Clear out the old dropdown
+    for(var k=yearDropdown.options.length-1; k>=0; k--) {
+        yearDropdown.remove(k);
+    }
+
+    // Depending on the data source, update the second metric data and the available years
+    switch(d3.select("#dataFilter").property("value")) {
+        case "LifeExpectancyData":
+            availableYears = ["2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014"];
+            break;
+        case "CorruptionData":
+            availableYears = ["2012","2013","2014","2015"];
+            break;
+        case "MigrationData":
+            availableYears = ["2007","2012"];
+            break;
+    }
 
     var formatToYear = d3.time.format("%Y");
 
-    var yearDropdown = document.getElementById("metricYear");
-
-    // This will create a dropdown with 2003-2014
-    for(var i = 2003; i < 2015; i++) {
-        var opt = new Date("01-01-"+i);
+    // This will create a dropdown with years
+    for(var i = 0; i < availableYears.length; i++) {
         var el = document.createElement("option");
-        el.textContent = formatToYear(opt);
+        el.textContent = availableYears[i];
+        var opt = new Date("01-01-"+availableYears[i]);
         el.value = opt;
         yearDropdown.appendChild(el);
     }
 
+    filterWorkingData();
+
 }
 
 
-function updateYearArray() {
+function filterWorkingData() {
     // We're going to make an easy-to-access array with the combined X and Y data from
     // EoDB and the filterMetric the user chose
 
@@ -73,68 +90,97 @@ function updateYearArray() {
     // Grab the year they picked from the filterMetric date dropdown
     var bizDate = d3.select("#metricYear").property("value");
 
+    var formatToYear = d3.time.format("%Y");
+    searchYear = formatToYear(new Date(bizDate));
+
+    console.log("User has chosen: " + filterMetric + ", " + searchYear);
+
+    switch(d3.select("#dataFilter").property("value")) {
+        case "LifeExpectancyData":
+            secondMetricData = d3.nest()
+                .key(function(d) { return d.Country_Code ; })
+                .entries(LifeExpectancyData);
+            break;
+        case "CorruptionData":
+            secondMetricData = d3.nest()
+                .key(function(d) { return d.Country_Code ; })
+                .entries(CorruptionData);
+            break;
+        case "MigrationData":
+            secondMetricData = d3.nest()
+                .key(function(d) { return d.Country_Code ; })
+                .entries(MigrationData);
+            break;
+    }
+
     selectedYearArray = [];
 
-    // Create an array of just the EoDB data from the selected year
-    for(var i=0; i<bizData.length; i++) {
-        if (bizData[i]['key'] == bizDate) {
-            for (var j=0; j<bizData[i]['values'].length; j++) {
-                selectedYearArray.push(bizData[i]['values'][j]);
-            }
-        }
-    }
+    // Filter doing biz data by year
+    bizData = d3.nest()
+        .key(function(d) { return d.Calendar_Year; })
+        .entries(DBData);
 
-    // Then save that data as a new nested array, sorted by country code
+    // Then create a new array of just the EoDB data from the selected year
+    var yearData = bizData.filter(function(d){
+        return d['key'] == bizDate;
+    });
+
+    // Then save that data as a new array, sorted by country code as key
     nestedEoDB = d3.nest()
-        .key(function(d) { return d.Country_Code; })
-        .entries(selectedYearArray);
+        .key(function(d) {
+            return d.Country_Code;
+        })
+        .entries(yearData[0]['values']);
 
+    // Go through the year's EoDB elements
+    // If the DTF isn't blank for that year, and the secondMetricCriteria isn't blank that year ..
+    // Add them to a new array called testeroo
 
-    // Finally, we can go through the data from the chosen metric and (if there is data that year), add it to the relevant countries
+    fraserTestArray = nestedEoDB.map(
+        // For every element in the array of DTF countries of that year
+        function(d) {
+            // If the Overall_DTF score is not blank
+            if (d['values'][0].Overall_DTF == '') {
 
-    var formatToYear = d3.time.format("%Y");
-    searchYear = "CY" + formatToYear(new Date(bizDate));
+            } else if (d['values'][0].Overall_DTF == "..") {
 
-    // For every country in EoDB
-    for (i=0; i<nestedEoDB.length; i++) {
-        // Go through every country in the chosen dataset
-        for (j=0; j<lifeData.length; j++) {
-            // If there is a match (the country appears in both datasets)
-            if (nestedEoDB[i]['key'] == lifeData[j]['key']) {
-                // And the value of the chosen dataset for that year is not 0
-                if (lifeData[j]['values'][0][searchYear] == '') {
-                    //console.log("Fraser - ''!!!")
-                }
-                else if (isNaN(lifeData[j]['values'][0][searchYear])) {
-                    //console.log("Fraser - NaN!!!")
-                }
-                else {
-                    // Add a new element to the year array for that country in that year, named "filterMetric"
-                    //console.log(lifeData[j]['key'] + ": " + lifeData[j]['values'][0][searchYear])
-                    nestedEoDB[i]['values'][0][filterMetric] = lifeData[j]['values'][0][searchYear];
+            } else {
+                // Iterate through every country code element in the secondary data array
+                for (var i=0; i<secondMetricData.length; i++) {
+                    // If there is a matching country code
+                    if (d.key == secondMetricData[i]['key']) {
+                        // OK, so there is a match in country names
+                        // And if the field for the given search year is not blank
+                        if (secondMetricData[i]['values'][0][searchYear] == '') {
+
+                        } else {
+                            // OK, so there is a value for the second metric too
+                            return {
+                                name : d.key,
+                                values : {
+                                    DTF : d['values'][0].Overall_DTF,
+                                    Secondary :  secondMetricData[i]['values'][0][searchYear],
+                                    Full_Name : d['values'][0].Economy
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-    }
+    );
 
-    console.log(nestedEoDB)
+    fraserTestArray = fraserTestArray.filter(function(d){
+        return d != null;
+    });
 
-    // Now we've got a new array, that has combined metrics!
-
-    updateNewVisualization();
+    // Now we've got a new array, that has combined metrics.  Let's redraw
+    updateScatter();
 
 }
 
 
-function updateNewVisualization() {
-
-    var filteredData = selectedYearArray;
-    var filterMetric = d3.select("#dataFilter").property("value");
-
-    var selectedOption = d3.select("#dataFilter").property("value");
-
-    var max_DTF = d3.max(selectedYearArray, function(d) {return d.Overall_DTF;	});
-    var max_life_expectancy = d3.max(selectedYearArray, function(d) {return d[filterMetric];	});
+function updateScatter() {
 
     /* Render the scales based on the new data */
     var x = d3.scale.linear()
@@ -143,7 +189,11 @@ function updateNewVisualization() {
 
     var y = d3.scale.linear()
         .range([height, 0])
-        .domain([0, max_life_expectancy]);
+        //.domain([0,1000000]);
+        .domain(d3.extent(fraserTestArray, function(d) { return d.values.Secondary; }));
+
+    console.log("Y range boundaries: " + d3.extent(fraserTestArray, function(d) { return d.values.Secondary; }));
+
 
     ///* Render the axes based on the new data */
     var xAxis = d3.svg.axis()
@@ -160,15 +210,26 @@ function updateNewVisualization() {
         .attr('class', 'd3-tip')
         .offset([-10, 0])
         .html(function(d) {
-            return "<strong>" + d['values'][0].Economy + "</strong> <span style='color:red'>" + d['values'][0].Overall_DTF + ", " + d['values'][0][filterMetric] + "</span>";
+            return "<strong>"
+                + d.values.Full_Name
+                + "</strong> <span style='color:red'>"
+                + d.values.DTF
+                + ", "
+                + (Math.round(d.values.Secondary * 100) / 100)
+                + "</span>";
         })
 
     svg.call(tip);
 
+    svg.selectAll(".x.axis").remove();
+    svg.selectAll("text").remove();
+
+    var xAxisHeight = (d3.select("#dataFilter").property("value") == "MigrationData") ? y(0) : height;
+
     /* Add the two axes */
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + xAxisHeight + ")")
         .call(xAxis);
 
     svg.append("g")
@@ -187,7 +248,22 @@ function updateNewVisualization() {
         .call(xAxis);
 
     var circle = svg.selectAll("circle")
-        .data(nestedEoDB);
+        .data(fraserTestArray);
+
+    svg.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "end")
+        .attr("x", width)
+        .attr("y", height - 6)
+        .text("Ease of Doing Business (/100)");
+
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "end")
+        .attr("y", 6)
+        .attr("dy", ".75em")
+        .attr("transform", "rotate(-90)")
+        .text("life expectancy (years)");
 
 
     circle.enter()
@@ -205,10 +281,24 @@ function updateNewVisualization() {
         .transition()
         .duration(1500)
         .attr("cx", function(d) {
-            return x(d['values'][0].Overall_DTF);
+            if (d == null) {
+                //console.log(" x is null")
+            } else if (d.values == null) {
+                //console.log("x.values is null")
+            } else {
+                //console.log(d.name + " x " + d.values.DTF);
+                return x(d.values.DTF);
+            };
         })
         .attr("cy", function(d) {
-            return y(d['values'][0][filterMetric]);
+            if (d == null) {
+                //console.log("y is null")
+            } else if (d.values == null) {
+                //console.log("y.values is null")
+            } else {
+                //console.log(d.name + " y " + d.values.Secondary);
+                return y(d.values.Secondary);
+            };
         })
         .attr("r", 3);
 
