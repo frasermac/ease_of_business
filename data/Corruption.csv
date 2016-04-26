@@ -1,4 +1,4 @@
-Country_Code,Country_Name,Transparency_Rank,2015,2014,2013,2012
+Country_Code,Country_Name,Transparency_Rank,CY2015,CY2014,CY2013,CY2012
 AFG,Afghanistan,166,11,12,8,8
 AGO,Angola,163,15,19,23,22
 ALB,Albania,88,36,33,31,33
@@ -23,27 +23,27 @@ BTN,Bhutan,27,65,65,63,63
 BWA,Botswana,28,63,63,64,65
 CAF,Central African Republic,145,24,24,25,26
 CAN,Canada,9,83,81,81,84
-CAN,Cape Verde,40,55,57,58,60
+CPV,Cape Verde,40,55,57,58,60
 CHE,Switzerland,7,86,86,85,86
-CHE,Syria,154,18,20,17,26
+SYR,Syria,154,18,20,17,26
 CHL,Chile,23,70,73,71,72
 CHN,China,83,37,36,40,39
 CIV,Cote d'Ivoire,107,32,32,27,29
 CMR,Cameroon,130,27,27,25,26
 COL,Colombia,83,37,37,36,36
 COM,Comoros,136,26,26,28,28
-COM,Congo Republic,146,23,23,22,26
+COG,Congo Republic,146,23,23,22,26
 CRI,Costa Rica,40,55,54,53,54
 CUB,Cuba,56,47,46,46,48
 CYP,Cyprus,32,61,63,63,66
 CZE,Czech Republic,37,56,51,48,49
-CZE,Democratic Republic of the Congo,147,22,22,22,21
+COD,Democratic Republic of the Congo,147,22,22,22,21
 DEU,Germany,10,81,79,78,79
 DJI,Djibouti,99,34,34,36,36
 DNK,Denmark,1,91,92,91,90
 DOM,Dominican Republic,103,33,32,29,32
 DZA,Algeria,88,36,36,36,34
-ECU,Egypt,88,36,37,32,32
+EGY,Egypt,88,36,37,32,32
 ECU,Ecuador,107,32,33,35,32
 ERI,Eritrea,154,18,18,20,25
 ESP,Spain,36,58,60,59,65
@@ -52,7 +52,7 @@ ETH,Ethiopia,103,33,33,33,33
 FIN,Finland,2,90,89,89,90
 FRA,France,23,70,69,71,71
 GAB,Gabon,99,34,37,34,35
-GAB,Gambia,123,28,29,28,34
+GMB,Gambia,123,28,29,28,34
 GBR,United Kingdom,10,81,78,76,74
 GEO,Georgia,48,52,52,49,52
 GHA,Ghana,56,47,48,46,45
@@ -61,13 +61,13 @@ GNB,Guinea-Bissau,158,17,19,19,25
 GRC,Greece,58,46,43,40,36
 GTM,Guatemala,123,28,32,29,33
 GUY,Guyana,119,29,30,27,28
-HND,Hong Kong,18,75,74,75,77
+HKG,Hong Kong,18,75,74,75,77
 HND,Honduras,112,31,29,26,28
 HRV,Croatia,50,51,48,48,46
 HTI,Haiti,158,17,19,19,19
 HUN,Hungary,50,51,54,54,55
 IDN,Indonesia,88,36,34,32,32
-IDN,Iran,130,27,27,25,28
+IRN,Iran,130,27,27,25,28
 IND,India,76,38,38,36,36
 IRL,Ireland,18,75,74,72,69
 IRQ,Iraq,161,16,16,16,18
@@ -82,7 +82,7 @@ KEN,Kenya,139,25,25,27,27
 KGZ,Kyrgyzstan,123,28,27,24,24
 KHM,Cambodia,150,21,21,20,22
 KIR,Korea (South),37,56,55,55,56
-KIR,Korea (North),167,8,8,8,8
+KOR,Korea (North),167,8,8,8,8
 KSV,Kosovo,103,33,33,33,34
 KWT,Kuwait,55,49,44,43,44
 LAO,Laos,139,25,25,26,21
@@ -127,7 +127,7 @@ PRT,Portugal,28,63,63,62,63
 PRY,Paraguay,130,27,24,24,25
 QAT,Qatar,22,71,69,68,68
 ROU,Romania,58,46,43,43,44
-ROU,Russia,119,29,27,28,28
+RUS,Russia,119,29,27,28,28
 RWA,Rwanda,44,54,49,53,53
 SAU,Saudi Arabia,48,52,49,46,44
 SDN,Sudan,165,12,11,11,13
@@ -147,7 +147,7 @@ SYC,Seychelles,40,55,55,54,52
 SYR,Taiwan,30,62,61,61,61
 TCD,Chad,147,22,22,19,19
 TGO,Togo,107,32,29,29,30
-THA,The FYR of Macedonia,66,42,45,44,43
+FSM,The FYR of Macedonia,66,42,45,44,43
 THA,Thailand,76,38,38,35,37
 TJK,Tajikistan,136,26,23,22,22
 TKM,Turkmenistan,154,18,17,17,17
@@ -163,7 +163,7 @@ USA,United States,16,76,74,73,73
 UZB,Uzbekistan,153,19,18,17,17
 VNM,Vietnam,112,31,31,31,31
 VUT,Venezuela,158,17,19,20,19
-WLD,Yemen,154,18,19,18,23
+YEM,Yemen,154,18,19,18,23
 ZAF,South Africa,61,44,44,42,43
 ZMB,Zambia,76,38,38,38,37
 ZWE,Zimbabwe,150,21,21,21,20
