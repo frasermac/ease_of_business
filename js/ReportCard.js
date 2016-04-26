@@ -86,7 +86,7 @@ SankeyAreaChart.prototype.drawChoropleth = function(){
             "<br> Life expectancy at birth: " + LifeExpectancy;
     });
 
-    // Set actions: show on hover; then remove
+    // Set actions: show on hover; then remove; On mouse click change contents of doing business
     countries
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide)
@@ -94,7 +94,9 @@ SankeyAreaChart.prototype.drawChoropleth = function(){
             country = d.id;
             updateChoropleth();
             vis.ranking = country;
+            vis.yearsel = d3.select("#selectYear").property("value");
             vis.wrangleData();
+
         });
 
     svg.call(tip);
@@ -138,16 +140,14 @@ SankeyAreaChart.prototype.initVis = function(){
 
     vis.path = vis.sankey.link();
 
-
-
-    // Call visualization
+    // Call visualization - Get initial selection of country and year
     vis.ranking = d3.select("#ranking-type").property("value");
     vis.yearsel = d3.select("#year").property("value");
 
-    //drawChoropleth(DBData);
+    //Call Wrangle data
     vis.wrangleData();
-    //d3.select("#choropleth_map").on('click',function(d){console.log("test")});
 
+    //Call initial Choropleth
     vis.drawChoropleth(DBData);
 
     // Call visualizationn when country drop down is selected
@@ -173,11 +173,13 @@ SankeyAreaChart.prototype.initVis = function(){
 SankeyAreaChart.prototype.wrangleData = function(){
     var vis = this;
 
-
     var newLinks = [];
     var newNodes = [];
+
+    //Default value for doing business score
     vis.titledtf = 0.0;
 
+    //Filter doing business data based on selection of country and year
     DoingBiz.forEach(function(p, i) {
         var Indvalue = .01;
         if (p.ccode == vis.ranking && p.year == vis.yearsel && p.source != 'DTF') {
@@ -199,6 +201,7 @@ SankeyAreaChart.prototype.wrangleData = function(){
         }
     });
 
+    // Default values to be shown when data is not available
     if (newNodes.length == 0) {
         newLinks = [
             {source:'Dealing with Construction Permits', target:vis.ranking, value:.01},
@@ -248,6 +251,7 @@ SankeyAreaChart.prototype.wrangleData = function(){
         graph.nodes[i] = { "name": d };
     });
 
+    //Call Sankey
     vis.sankey
         .nodes(graph.nodes)
         .links(graph.links)
@@ -255,12 +259,14 @@ SankeyAreaChart.prototype.wrangleData = function(){
 
     vis.newDetails = [];
 
+    //Default value of unknown, if value exists it will be overwritten by actual data
     vis.newDetails.push({
         trans_rank: 'unknown',
         life_expectancy: 'unknown',
         net_migration: 'unknown'
     });
 
+    // Get corruption, life expectancy and net migration data to be displayed in report card
     le_corruption_nm.forEach(function(p, i) {
         if (p.ccode == vis.ranking && p.year == vis.yearsel) {
             vis.newDetails = [];
@@ -287,8 +293,9 @@ SankeyAreaChart.prototype.wrangleData = function(){
             });
         }
     });
+    //If country flag is not available a default image with name gen.png will be displayed
     vis.alpha2 = 'gen';
-    //console.log((vis.ranking.toLowerCase()));
+    // Get flag images for choosen country
     flag_al2_3.forEach(function(p, i) {
         if (p.alpha3 == vis.ranking.toLowerCase()) {
             //https://github.com/stefangabos/world_countries
@@ -296,7 +303,6 @@ SankeyAreaChart.prototype.wrangleData = function(){
         }
     });
     vis.updateVis();
-    //drawChoropleth(DBData);
 
 }
 
@@ -307,9 +313,11 @@ SankeyAreaChart.prototype.updateVis = function(){
     var titlelbl = vis.svg.selectAll(".title")
         .data(vis.newDetails);
 
+    // enter text
     titlelbl.enter().append("text")
         .attr("class","title");
 
+    //Dynamically update title
     titlelbl.transition().style("opacity", 0.5).duration(800)
         .attr("x", 0)
         .attr("y", -20)
@@ -319,12 +327,14 @@ SankeyAreaChart.prototype.updateVis = function(){
         .transition()
         .style("opacity", 1);
 
+    //Remove
     titlelbl.exit().remove();
 
 // Netmigration value
     var netmigration = vis.svg.selectAll(".detail")
         .data(vis.newDetails);
 
+    // Add netmigration text
     netmigration.enter().append("text")
         .attr("class","detail");
 
@@ -359,7 +369,7 @@ SankeyAreaChart.prototype.updateVis = function(){
 
     life_expectancy.exit().remove();
 
-    // Life expectancy value
+    // Corruption value
     var corruption = vis.svg.selectAll(".corr")
         .data(vis.newDetails);
 
@@ -403,18 +413,15 @@ SankeyAreaChart.prototype.updateVis = function(){
         .data(graph.nodes);
 
 
-// add the rectangles for the nodes
+// add the rectangles for the 10 Indicators
     node.enter().append("rect")
         .attr("class", "node");
 
     node.transition().style("opacity", 0.5).duration(800)
         .attr("height", function (d) {
         if ((d.name != vis.countryname)&&(d.name.length>3)){
-            //return vis.titledtf/10;
             return d.dy;
-            //return ty;
         }
-        //else return d.dy;
         })
         .attr("width", vis.sankey.nodeWidth())
         .style("fill", function (d) {
@@ -427,14 +434,13 @@ SankeyAreaChart.prototype.updateVis = function(){
             if ((d.name != vis.countryname)&&(d.name.length>3)){
                 return "translate(" + d.x + "," + d.y + ")";
             }
-            //else return "translate(" + d.x + "," + d.y + ")";
         })
         .transition()
         .style("opacity", 1);
 
     node.exit().remove();
 
-// add in the nodes
+// adding flag for choosen country
     var nodeimage = vis.svg.selectAll(".nodeimg")
         .data(graph.nodes);
 
@@ -452,7 +458,7 @@ SankeyAreaChart.prototype.updateVis = function(){
 
     nodeimage.exit().remove();
 
-// add title to nodes
+// add details for each Indicator
     // add in the nodes
     var nodetxt = vis.svg.selectAll(".nodetxt")
         .data(graph.nodes);
@@ -494,3 +500,11 @@ SankeyAreaChart.prototype.updateVis = function(){
     nodetxt.exit().remove();
 
 };
+
+//Change dropdown list based on other selection
+//https://www.daftlogic.com/information-programmatically-preselect-dropdown-using-javascript.htm
+SankeyAreaChart.prototype.setSelectedIndex = function (s, i)
+{
+    s.options[i-1].selected = true;
+    return;
+}
