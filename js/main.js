@@ -6,7 +6,7 @@ var LifeExpectancyData = [];
 
 // SELECTION variables (super-global)
 var country = "AFG";
-var year = 2015;
+var year;
 var metrics = "corruption";
 var choroplethMetric = "db";
 var migrationYear;
@@ -109,7 +109,7 @@ function loadData(error, data1, data2, data3, data4, data5, data6, data7) {
 
         //test();
 
-        createVis(DBData,DoingBiz,le_corruption_nm,flag_al2_3);
+        drawReportCard(DBData,DoingBiz,le_corruption_nm,flag_al2_3);
 
         drawScatter(DBData, MigrationData, CorruptionData, LifeExpectancyData);
 
@@ -118,6 +118,58 @@ function loadData(error, data1, data2, data3, data4, data5, data6, data7) {
 
         updateDescriptionReportCard();
     }
+}
+
+function populateDatepicker() {
+    // Fill up the dropdown lists with years that are available for both Ease of Doing Business AND the filterMetric
+
+    var availableYears = [];
+    var yearDropdown = document.getElementById("metricYear");
+
+    // Clear out the old dropdown
+    for(var k=yearDropdown.options.length-1; k>=0; k--) {
+        yearDropdown.remove(k);
+    }
+
+    // Depending on the data source, update the second metric data and the available years
+    switch(d3.select("#dataFilter").property("value")) {
+        case "DoingBusinessData":
+            availableYears = ["2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014", "2015"];
+            break;
+        case "LifeExpectancyData":
+            availableYears = ["2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014"];
+            break;
+        case "CorruptionData":
+            availableYears = ["2012","2013","2014","2015"];
+            break;
+        case "MigrationData":
+            availableYears = ["2007","2012"];
+            break;
+    }
+
+    var formatToYear = d3.time.format("%Y");
+
+    // This will create a dropdown with years
+    for(var i = 0; i < availableYears.length; i++) {
+        var el = document.createElement("option");
+        el.textContent = availableYears[i];
+        var opt = new Date("01-01-"+availableYears[i]);
+        el.value = opt;
+        yearDropdown.appendChild(el);
+    }
+
+    if (d3.select("#dataFilter").property("value") == "DoingBusinessData") {
+        // User selected doing biz (skip scatter plot generation)
+        //console.log("User selected doing biz (skipping scatter plot generation)");
+    } else {
+        filterWorkingData();
+    }
+
+}
+
+function prepGraphs() {
+    populateDatepicker();
+    updateSelection();
 }
 
 function migrationYearFunction() {
@@ -175,11 +227,12 @@ function test() {
     }
 }
 
-function updateYear() {
-
-    // Get user's selection
-    selectYear = document.getElementById("selectYear");
-    year = selectYear.options[selectYear.selectedIndex].value;
-
+function yearSelected() {
     updateChoropleth();
+    if (d3.select("#dataFilter").property("value") == "DoingBusinessData") {
+        // User selected doing biz (skip scatter plot generation)
+        //console.log("User selected doing biz (skipping scatter plot generation)");
+    } else {
+        filterWorkingData();
+    }
 }

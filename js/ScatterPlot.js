@@ -40,46 +40,6 @@ function drawScatter(DBData, MigrationData, CorruptionData, LifeExpectancyData) 
 }
 
 
-function populateDatepicker() {
-    // Fill up the dropdown lists with years that are available for both Ease of Doing Business AND the filterMetric
-
-    var availableYears = [];
-    var yearDropdown = document.getElementById("metricYear");
-
-    // Clear out the old dropdown
-    for(var k=yearDropdown.options.length-1; k>=0; k--) {
-        yearDropdown.remove(k);
-    }
-
-    // Depending on the data source, update the second metric data and the available years
-    switch(d3.select("#dataFilter").property("value")) {
-        case "LifeExpectancyData":
-            availableYears = ["2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014"];
-            break;
-        case "CorruptionData":
-            availableYears = ["2012","2013","2014","2015"];
-            break;
-        case "MigrationData":
-            availableYears = ["2007","2012"];
-            break;
-    }
-
-    var formatToYear = d3.time.format("%Y");
-
-    // This will create a dropdown with years
-    for(var i = 0; i < availableYears.length; i++) {
-        var el = document.createElement("option");
-        el.textContent = availableYears[i];
-        var opt = new Date("01-01-"+availableYears[i]);
-        el.value = opt;
-        yearDropdown.appendChild(el);
-    }
-
-    filterWorkingData();
-
-}
-
-
 function filterWorkingData() {
     // We're going to make an easy-to-access array with the combined X and Y data from
     // EoDB and the filterMetric the user chose
@@ -93,7 +53,7 @@ function filterWorkingData() {
     var formatToYear = d3.time.format("%Y");
     searchYear = formatToYear(new Date(bizDate));
 
-    console.log("User has chosen: " + filterMetric + ", " + searchYear);
+    //console.log("User has chosen: " + filterMetric + ", " + searchYear);
 
     switch(d3.select("#dataFilter").property("value")) {
         case "LifeExpectancyData":
@@ -125,7 +85,7 @@ function filterWorkingData() {
         return d['key'] == searchYear;
     });
 
-    console.log(searchYear)
+    //console.log(searchYear)
 
     // Then save that data as a new array, sorted by country code as key
     nestedEoDB = d3.nest()
@@ -137,6 +97,8 @@ function filterWorkingData() {
     // Go through the year's EoDB elements
     // If the DTF isn't blank for that year, and the secondMetricCriteria isn't blank that year ..
     // Add them to a new array called testeroo
+
+    console.log(secondMetricData)
 
     fraserTestArray = nestedEoDB.map(
         // For every element in the array of DTF countries of that year
@@ -178,7 +140,13 @@ function filterWorkingData() {
     });
 
     // Now we've got a new array, that has combined metrics.  Let's redraw
-    updateScatter();
+    if (d3.select("#dataFilter").property("value") == "DoingBusinessData") {
+        console.log("User selected doing biz (skipping scatter plot generation)");
+    } else {
+        updateScatter();
+    }
+
+
 
 }
 
@@ -195,7 +163,7 @@ function updateScatter() {
         //.domain([0,1000000]);
         .domain(d3.extent(fraserTestArray, function(d) { return d.values.Secondary; }));
 
-    console.log("Y range boundaries: " + d3.extent(fraserTestArray, function(d) { return d.values.Secondary; }));
+    //console.log("Y range boundaries: " + d3.extent(fraserTestArray, function(d) { return d.values.Secondary; }));
 
 
     ///* Render the axes based on the new data */

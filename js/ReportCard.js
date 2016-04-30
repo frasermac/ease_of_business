@@ -5,7 +5,7 @@
 //set up graph variable with nodes and links
 var graph = {"nodes" : [], "links" : []};
 
-function createVis(DBData,DoingBiz,le_corruption_nm,flag_al2_3) {
+function drawReportCard(DBData, DoingBiz, le_corruption_nm, flag_al2_3) {
     // Instantiate visualization objects here
     sankeychart = new SankeyAreaChart("chart-area", DoingBiz);
 }

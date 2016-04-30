@@ -58,24 +58,39 @@ d3.json("data/countries.json", function(error, data1) {
 
 function updateSelection(){
 
-    // Get user's selection
-    selectMetric = document.getElementById("selectMetricChoropleth");
-    choroplethMetric = selectMetric.options[selectMetric.selectedIndex].value;
-
     updateChoropleth();
 }
 
 function updateChoropleth(){
 
+    // Get user's selection
+    choroplethMetric = d3.select("#dataFilter").property("value");
+
+    if (year == null) {
+        searchYear = new Date("01-01-2004");
+    } else {
+        searchYear = d3.select("#metricYear").property("value");
+    }
+
+    console.log("Choropleth filter & year: " + choroplethMetric + " " + searchYear)
+
+    if (year == null) {
+        year = 2004;
+    } else {
+        var formatToYear = d3.time.format("%Y");
+
+        year = formatToYear(new Date(searchYear));
+    }
+
     // Update COLOR SCALE domain
 
     // DB data set is selected
-    if (choroplethMetric == "db") {
+    if (choroplethMetric == "DoingBusinessData") {
         color.domain([100, 0]);
     }
 
     // Migration data set is selected
-    else if (choroplethMetric == "migration") {
+    else if (choroplethMetric == "MigrationData") {
         migrationYearFunction();
         color.domain([d3.max(MigrationData, function (d) {
             return (d[migrationYear]);
@@ -87,13 +102,13 @@ function updateChoropleth(){
     }
 
     // Corruption data set is selected
-    else if (choroplethMetric == "corruption") {
+    else if (choroplethMetric == "CorruptionData") {
         CYear = "CY"+year;
         color.domain([100,0]);
     }
 
     // Life Expectancy data set is selected
-    else if (choroplethMetric == "life") {
+    else if (choroplethMetric == "LifeExpectancyData") {
         CYear = "CY"+year;
         color.domain([d3.max(LifeExpectancyData, function (d) {return (d[CYear]);}),
             d3.min(LifeExpectancyData, function (d) {return (d[CYear]);})]);
@@ -143,7 +158,7 @@ function updateChoropleth(){
             var result = "none";
 
             // Doing Business dataset selected
-            if (choroplethMetric == "db") {
+            if (choroplethMetric == "DoingBusinessData") {
                 for (i = 0; i < DBData.length; i++) {
                     if (DBData[i].Country_Code == d.id && DBData[i].Calendar_Year == year) {
                         value = DBData[i].Overall_DTF;
@@ -154,7 +169,7 @@ function updateChoropleth(){
             }
 
             // Migration dataset selected
-            else if (choroplethMetric == "migration") {
+            else if (choroplethMetric == "MigrationData") {
                 migrationYearFunction();
                 for (i = 0; i < MigrationData.length; i++) {
                     if (MigrationData[i].Country_Code == d.id) {
@@ -170,7 +185,7 @@ function updateChoropleth(){
             }
 
             // Corruption dataset selected
-            else if (choroplethMetric == "corruption") {
+            else if (choroplethMetric == "CorruptionData") {
                 CYear = "CY"+year;
                 for (i = 0; i < CorruptionData.length; i++) {
                     if (CorruptionData[i].Country_Code == d.id) {
@@ -186,7 +201,7 @@ function updateChoropleth(){
             }
 
             // Life Expectancy dataset selected
-            else if (choroplethMetric == "life") {
+            else if (choroplethMetric == "LifeExpectancyData") {
                 CYear = "CY"+year;
                 for (i = 0; i < LifeExpectancyData.length; i++) {
                     if (LifeExpectancyData[i].Country_Code == d.id) {
@@ -217,11 +232,11 @@ function updateLegend() {
         })
         .attr("y", 40)
         .text(function (d,i) {
-            if (choroplethMetric == "db" || choroplethMetric == "corruption")
+            if (choroplethMetric == "DoingBusinessData" || choroplethMetric == "CorruptionData")
                 return (legend_data_labels[i]);
-            else if (choroplethMetric == "migration")
+            else if (choroplethMetric == "MigrationData")
                 return formatMigration(legend_data_labels[i]);
-            else if (choroplethMetric == "life")
+            else if (choroplethMetric == "LifeExpectancyData")
                 return formatLifeExpectancy(legend_data_labels[i])
         });
 }
@@ -265,10 +280,10 @@ legend.selectAll("text")
     })
     .attr("y", 40)
     .text(function (d) {
-        if (choroplethMetric == "db" || choroplethMetric == "corruption")
+        if (choroplethMetric == "DoingBusinessData" || choroplethMetric == "CorruptionData")
             return (d);
-        else if (choroplethMetric == "migration")
+        else if (choroplethMetric == "MigrationData")
             return formatMigration(d);
-        else if (choroplethMetric == "life")
+        else if (choroplethMetric == "LifeExpectancyData")
             return formatLifeExpectancy(d)
     });
