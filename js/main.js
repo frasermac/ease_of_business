@@ -134,16 +134,16 @@ function populateDatepicker() {
     // Depending on the data source, update the second metric data and the available years
     switch(d3.select("#dataFilter").property("value")) {
         case "DoingBusinessData":
-            availableYears = ["2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014", "2015"];
+            availableYears = ["2015","2014","2013","2012","2011","2010","2011","2010","2009","2008","2007", "2006"];
             break;
         case "LifeExpectancyData":
-            availableYears = ["2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014"];
+            availableYears = ["2014","2013","2012","2011","2010","2009","2008","2007","2006","2005","2004"];
             break;
         case "CorruptionData":
-            availableYears = ["2012","2013","2014","2015"];
+            availableYears = ["2015","2014","2013","2012"];
             break;
         case "MigrationData":
-            availableYears = ["2007","2012"];
+            availableYears = ["2012","2007"];
             break;
     }
 
