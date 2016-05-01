@@ -92,9 +92,13 @@ SankeyAreaChart.prototype.drawChoropleth = function(){
         .on('mouseout', tip.hide)
         .on('click',function(d){
             country = d.id;
+            console.log(country);
             updateChoropleth();
             vis.ranking = country;
-            vis.yearsel = d3.select("#selectYear").property("value");
+            vis.yearsel = d3.select("#year").property("value");
+
+            console.log(vis.yearsel);
+
             vis.wrangleData();
 
         });
@@ -113,9 +117,9 @@ SankeyAreaChart.prototype.drawChoropleth = function(){
 SankeyAreaChart.prototype.initVis = function(){
     var vis = this;
 
-    vis.margin = {top: 80, right: 0, bottom: 60, left: 0};
+    vis.margin = {top: 40, right: 0, bottom: 20, left: 0};
     vis.width = 600 - vis.margin.left - vis.margin.right;
-    vis.height = 600 - vis.margin.top - vis.margin.bottom;
+    vis.height = 480 - vis.margin.top - vis.margin.bottom;
 
     vis.formatNumber = d3.format(",.0f"),    // zero decimal places
         vis.format = function(d) {
@@ -450,7 +454,7 @@ SankeyAreaChart.prototype.updateVis = function(){
     nodeimage.transition().style("opacity", 0.5).duration(800)
         .attr('xlink:href','img/'+vis.alpha2)
         .attr("x", 505)
-        .attr("y", 405)
+        .attr("y", 360)
         .attr("width", 80)
         .attr("height", 80)
         .transition()
@@ -467,12 +471,12 @@ SankeyAreaChart.prototype.updateVis = function(){
         .attr("class", "nodetxt");
 
     nodetxt.transition().style("opacity", 0.5).duration(800)
-        .attr("x", 500)
+        .attr("x", 580)
         .attr("y", function (d) {
             if ((d.name != vis.countryname)&&(d.name.length>3)){
                 return d.y + d.dy/2;
             }
-            else return 380;
+            else return 320;
 
         })
         .attr("dy", ".35em")

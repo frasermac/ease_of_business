@@ -97,7 +97,7 @@ function updateDescriptionReportCard () {
     else
         var text = "The below report card provides details on performance of " + countryName + " compared to other countries. ";
 
-    reportDescription.text(text);
+    //reportDescription.text(text);
 
 }
 
@@ -105,9 +105,7 @@ function updateDescriptionReportCard () {
 d3.select("#descriptionSankey")
 .append("p")
 .text("Overall score for ease of doing business is based on country's results in 10 individual areas: " +
-    "starting a business, dealing with construction permits, getting electricity, registering property, " +
-    "getting credit, protecting minority investors, paying taxes, trading across borders, enforcing contracts, " +
-    "and resolving insolvency. The below diagram provides more insight on these individual scores, each which " +
+    "The above diagram provides more insight on these individual indicators, each which " +
     "ranges from 0 (difficult environment) to 100 (easy environment). Overall score is a simple average of all individual scores.");
 
 // Section 2 - comparing data sets

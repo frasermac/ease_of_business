@@ -1,7 +1,7 @@
 d3.sankey = function() {
     var sankey = {},
         nodeWidth = 24,
-        nodePadding = 8,
+        nodePadding = 0,
         size = [1, 1],
         nodes = [],
         links = [];
@@ -267,14 +267,14 @@ d3.sankey = function() {
 
         });
         nodes.forEach(function(node) {
-            var sy = 0, ty = 240;
+            var sy = 0, ty = 180;
             node.sourceLinks.forEach(function(link) {
                 link.sy = sy;
                 sy += link.dy;
             });
             node.targetLinks.forEach(function(link) {
                 link.ty = ty;
-                ty += link.dy/10;
+                ty += link.dy;
                 //ty += 80.08/20;
             });
 
