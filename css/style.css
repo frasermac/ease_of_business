@@ -1,14 +1,28 @@
+
+/* General */
+body {
+    background-color: #d2eaf4;
+    font-size: 14px;
+}
+
+.sub-title {
+    font-style: italic;
+    font-weight: bold}
+
+.text {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+
 /* Choropleth */
 
 svg .country {
     opacity: 0.75;
-    stroke: #5e4e53;
-    stroke-width: 1px;
-    stroke-opacity: 0.5;
 }
 
 svg .country:hover {
-    stroke: #5e4e53;
     stroke-opacity:1;
     stroke-width: 2px;
 }
@@ -20,8 +34,28 @@ svg .country:hover{
 svg .legend_text{
     fill: #5e4e53;
     text-anchor: middle;
+    font-size: 12px;
 }
 
+.link {
+    fill: none;
+    stroke: #000;
+    stroke-opacity: .2;
+}
+
+/* Tooltip */
+
+.d3-tip {
+    background-color: rgba(265, 265, 265, 0.9);
+    color: #5e4e53;
+    font-size: 12px;
+    font-style: oblique;
+    text-align: end;
+    padding: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
+    position: inherit;
+}
 
 /* ADD YOUR STYLES HERE */
 
@@ -89,12 +123,6 @@ svg .legend_text{
     left: 0;
 }
 
-body {
-    font-family: 'Lato', sans-serif;
-    background-color: #D0C6B2;
-    font-weight: 100;
-    font-size: 12px;
-}
 
 .node rect {
     cursor: move;
