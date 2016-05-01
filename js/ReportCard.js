@@ -92,15 +92,10 @@ SankeyAreaChart.prototype.drawChoropleth = function(){
         .on('mouseout', tip.hide)
         .on('click',function(d){
             country = d.id;
-            console.log(country);
+
             updateChoropleth();
             vis.ranking = country;
-            //vis.yearsel = d3.select("#year").property("value");
-            //console.log(document.getElementById("year"));
             vis.setSelectedIndex();
-
-            //console.log(vis.yearsel);
-
             vis.wrangleData();
 
         });
@@ -158,9 +153,11 @@ SankeyAreaChart.prototype.initVis = function(){
 
     // Call visualizationn when country drop down is selected
     d3.select("#ranking-type").on("change", function(){
+        country = d3.select("#ranking-type").property("value");
         vis.ranking = d3.select("#ranking-type").property("value");
         vis.yearsel = d3.select("#year").property("value");
         vis.wrangleData();
+        updateChoropleth();
     });
 
     // Call visualizationn when year drop down is selected
@@ -300,7 +297,7 @@ SankeyAreaChart.prototype.wrangleData = function(){
         }
     });
     //If country flag is not available a default image with name gen.png will be displayed
-    vis.alpha2 = 'gen';
+    vis.alpha2 = 'gen.png';
     // Get flag images for choosen country
     flag_al2_3.forEach(function(p, i) {
         if (p.alpha3 == vis.ranking.toLowerCase()) {
