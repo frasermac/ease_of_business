@@ -95,9 +95,11 @@ SankeyAreaChart.prototype.drawChoropleth = function(){
             console.log(country);
             updateChoropleth();
             vis.ranking = country;
-            vis.yearsel = d3.select("#year").property("value");
+            //vis.yearsel = d3.select("#year").property("value");
+            //console.log(document.getElementById("year"));
+            vis.setSelectedIndex();
 
-            console.log(vis.yearsel);
+            //console.log(vis.yearsel);
 
             vis.wrangleData();
 
@@ -117,7 +119,7 @@ SankeyAreaChart.prototype.drawChoropleth = function(){
 SankeyAreaChart.prototype.initVis = function(){
     var vis = this;
 
-    vis.margin = {top: 40, right: 0, bottom: 20, left: 0};
+    vis.margin = {top: 42, right: 0, bottom: 20, left: 0};
     vis.width = 600 - vis.margin.left - vis.margin.right;
     vis.height = 480 - vis.margin.top - vis.margin.bottom;
 
@@ -454,7 +456,7 @@ SankeyAreaChart.prototype.updateVis = function(){
     nodeimage.transition().style("opacity", 0.5).duration(800)
         .attr('xlink:href','img/'+vis.alpha2)
         .attr("x", 505)
-        .attr("y", 360)
+        .attr("y", 310)
         .attr("width", 80)
         .attr("height", 80)
         .transition()
@@ -476,7 +478,7 @@ SankeyAreaChart.prototype.updateVis = function(){
             if ((d.name != vis.countryname)&&(d.name.length>3)){
                 return d.y + d.dy/2;
             }
-            else return 320;
+            else return 290;
 
         })
         .attr("dy", ".35em")
@@ -505,6 +507,25 @@ SankeyAreaChart.prototype.updateVis = function(){
 
 };
 
+SankeyAreaChart.prototype.setSelectedIndex = function ()
+{
+    var vis = this;
+    s=document.getElementById("ranking-type");
+
+    // Loop through all the items in drop down list
+    for (i = 0; i< s.options.length; i++)
+    {
+        if (s.options[i].value == vis.ranking)
+        {
+            // Item is found. Set its property and exit
+            s.options[i].selected = true;
+            break;
+        }
+    }
+    return;
+}
+
+/*
 //Change dropdown list based on other selection
 //https://www.daftlogic.com/information-programmatically-preselect-dropdown-using-javascript.htm
 SankeyAreaChart.prototype.setSelectedIndex = function (s, i)
@@ -512,3 +533,4 @@ SankeyAreaChart.prototype.setSelectedIndex = function (s, i)
     s.options[i-1].selected = true;
     return;
 }
+    */

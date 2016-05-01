@@ -267,7 +267,7 @@ d3.sankey = function() {
 
         });
         nodes.forEach(function(node) {
-            var sy = 0, ty = 180;
+            var sy = 0, ty = 120;
             node.sourceLinks.forEach(function(link) {
                 link.sy = sy;
                 sy += link.dy;
