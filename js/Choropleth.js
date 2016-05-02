@@ -56,11 +56,6 @@ d3.json("data/countries.json", function(error, data1) {
 });
 
 
-function updateSelection(){
-
-    updateChoropleth();
-}
-
 function updateChoropleth(){
 
     // Get user's selection

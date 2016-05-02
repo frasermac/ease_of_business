@@ -4,8 +4,8 @@
 // SVG drawing area
 
 var margin = {top: 20, right: 20, bottom: 30, left: 80},
-    width = 500 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
+    width = 700 - margin.left - margin.right,
+    height = 350 - margin.top - margin.bottom;
 
 var svg = d3.select("#scatter")
     .append("svg")
@@ -53,7 +53,6 @@ function filterWorkingData() {
     var formatToYear = d3.time.format("%Y");
     searchYear = formatToYear(new Date(bizDate));
 
-    //console.log("User has chosen: " + filterMetric + ", " + searchYear);
 
     switch(d3.select("#dataFilter").property("value")) {
         case "LifeExpectancyData":
@@ -165,7 +164,7 @@ function updateScatter() {
 
     //console.log("Y range boundaries: " + d3.extent(fraserTestArray, function(d) { return d.values.Secondary; }));
 
-
+    
     ///* Render the axes based on the new data */
     var xAxis = d3.svg.axis()
         .scale(x)
@@ -271,5 +270,4 @@ function updateScatter() {
             };
         })
         .attr("r", 3);
-
 }

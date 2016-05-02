@@ -107,21 +107,15 @@ function loadData(error, data1, data2, data3, data4, data5, data6, data7) {
             flag_al2_3.push(item);
         });
 
-        //test();
-
         drawReportCard(DBData,DoingBiz,le_corruption_nm,flag_al2_3);
-
         drawScatter(DBData, MigrationData, CorruptionData, LifeExpectancyData);
-
-        // Call choropleth
-        //drawChoropleth(DBData);
-
         updateDescriptionReportCard();
+        prepGraphs()
     }
 }
 
+// Updates the "Metric Year" dropdowns with years that are available for both Ease of Doing Business AND the filterMetric
 function populateDatepicker() {
-    // Fill up the dropdown lists with years that are available for both Ease of Doing Business AND the filterMetric
 
     var availableYears = [];
     var yearDropdown = document.getElementById("metricYear");
@@ -167,10 +161,14 @@ function populateDatepicker() {
 
 }
 
+// Called when the user picks a secondary metric
+// Calls populateDatepicker and updateChoropleth
 function prepGraphs() {
     populateDatepicker();
-    updateSelection();
+    updateChoropleth();
+    updateScatterIfNotEoDB();
 }
+
 
 function migrationYearFunction() {
     // Define migration year to be used
@@ -182,57 +180,32 @@ function migrationYearFunction() {
     return migrationYear;
 }
 
-// Test if something works :)
-function test() {
-
-    // Log data sets to console
-    console.log("DB data: ", DBData);
-    console.log("Migration data: ", MigrationData);
-    console.log("Corruption data: ", CorruptionData);
-    console.log("Life Expectancy data: ", LifeExpectancyData);
-
-    // Doing Business data
-    for(i=0; i<DBData.length; i++)
-    {
-            if (DBData[i].Country_Code == country && DBData[i].Calendar_Year == year)
-                console.log("DB item:",DBData[i])
-    }
-
-    // Migration data
-    for(i=0; i<MigrationData.length; i++)
-    {
-        if (MigrationData[i].Country_Code == country)
-            console.log("Migration item:",MigrationData[i])
-    }
-
-    // Corruption data
-    for(i=0; i<CorruptionData.length; i++)
-    {
-        if (CorruptionData[i].Country_Code == country)
-            console.log("Corruption item:",CorruptionData[i])
-    }
-
-    // Life expectancy data
-    for(i=0; i<LifeExpectancyData.length; i++)
-    {
-        if (LifeExpectancyData[i].Country_Code == country)
-            console.log("Life expectancy item:",LifeExpectancyData[i])
-    }
-
-    // Life expectancy data
-    for(i=0; i<LifeExpectancyData.length; i++)
-    {
-        if (LifeExpectancyData[i].CY2014 == 0)
-            console.log("!!!Life expectancy item:",LifeExpectancyData[i])
-    }
-}
-
-function yearSelected() {
-    updateChoropleth();
+function updateScatterIfNotEoDB() {
     if (d3.select("#dataFilter").property("value") == "DoingBusinessData") {
         // User selected doing biz (skip scatter plot generation)
         //console.log("User selected doing biz (skipping scatter plot generation)");
     } else {
         filterWorkingData();
+        updateScatterTitle();
     }
+}
+
+function updateScatterTitle() {
+
+    var skillsSelect = document.getElementById("dataFilter");
+    var filterMetric = skillsSelect.options[skillsSelect.selectedIndex].text;
+
+    // Grab the year they picked from the filterMetric date dropdown
+    var bizDate = d3.select("#metricYear").property("value");
+
+    var formatToYear = d3.time.format("%Y");
+    searchYear = formatToYear(new Date(bizDate));
+
+    document.getElementById('scatter-title').innerHTML = ("Now viewing: Ease of Doing Business (X axis) vs. " +
+        filterMetric +
+        " (Y axis) in " +
+        searchYear
+
+    )
+
 }
