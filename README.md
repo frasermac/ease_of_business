@@ -16,7 +16,7 @@ Please use Google Chrome for viewing the project, as not all functionality is av
 ##Screencast video:##
 _Click to watch_
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/T1EsLqJkTSE/0.jpg)](https://youtu.be/T1EsLqJkTSE)
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/T1EsLqJkTSE/hqdefault.jpg)](https://youtu.be/T1EsLqJkTSE)
 
 ##Features:##
 _Country selection_
