@@ -14,8 +14,9 @@ Please use Google Chrome for viewing the project, as not all functionality is av
 /data/Process_book.pdf
 
 ##Screencast video:##
-[https://youtu.be/T1EsLqJkTSE/](https://youtu.be/T1EsLqJkTSE/)
+_Click to watch_
 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/T1EsLqJkTSE/0.jpg)](https://youtu.be/T1EsLqJkTSE)
 
 ##Features:##
 _Country selection_
