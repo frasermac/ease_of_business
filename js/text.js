@@ -22,12 +22,12 @@ d3.select("#generalOverview")
     .text("Explore the Data - country level");
 
 // Choropleth description
-var textUnderChoropleth = d3.select("#choropleth")
-    .append("p")
-    .attr("class","sub-title")
-    .text("Description of data:")
-    .append("p")
-    .attr("class","text");
+//var textUnderChoropleth = d3.select("#choropleth")
+//    .append("p")
+//    .attr("class","sub-title")
+//    .text("Description of data:")
+//    .append("p")
+//    .attr("class","text");
 
 function updateDescriptionChoropleth() {
     var text;
@@ -74,7 +74,7 @@ function updateDescriptionChoropleth() {
         text = "Life expectancy shows the number of years a person born in the country is expected to live. Values are absolute and provided in years."
     }
 
-    textUnderChoropleth.text(text)
+    //textUnderChoropleth.text(text)
 }
 
 // Text above report card
