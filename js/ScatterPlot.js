@@ -53,7 +53,6 @@ function filterWorkingData() {
     var formatToYear = d3.time.format("%Y");
     searchYear = formatToYear(new Date(bizDate));
 
-    //console.log("User has chosen: " + filterMetric + ", " + searchYear);
 
     switch(d3.select("#dataFilter").property("value")) {
         case "LifeExpectancyData":
@@ -165,7 +164,7 @@ function updateScatter() {
 
     //console.log("Y range boundaries: " + d3.extent(fraserTestArray, function(d) { return d.values.Secondary; }));
 
-
+    
     ///* Render the axes based on the new data */
     var xAxis = d3.svg.axis()
         .scale(x)
@@ -271,5 +270,4 @@ function updateScatter() {
             };
         })
         .attr("r", 3);
-
 }

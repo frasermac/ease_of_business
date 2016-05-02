@@ -39,10 +39,10 @@
                     <div class="form-group">
                         <label>Metric:</label>
                         <select class="form-control" id="dataFilter" onmousedown="this.value='';" onchange="prepGraphs()">
-                            <option value ="LifeExpectancyData">Life expectancy at birth</option>
-                            <option value ="DoingBusinessData">Ease of doing business</option>
                             <option value="CorruptionData">Corruption perception</option>
+                            <option value ="LifeExpectancyData">Life expectancy at birth</option>
                             <option value ="MigrationData">Net migration (5yr averages)</option>
+                            <option value ="DoingBusinessData">Ease of doing business</option>
                         </select>
                     </div>
                 </div>
@@ -333,7 +333,11 @@
         </div>
 
         <div class = "row">
-                <!-- Scatter Plot -->
+
+            <div class="sub-title" id="scatter-title">
+                </div>
+
+            <!-- Scatter Plot -->
                 <div id="scatter">
                 </div>
 
@@ -396,4 +400,4 @@
     <!-- Load data, create visualizations -->
     <script src="js/main.js"></script>
 </body>
-</html> 
+</html>
