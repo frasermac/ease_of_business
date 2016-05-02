@@ -159,12 +159,12 @@ function populateDatepicker() {
         filterWorkingData();
     }
 
+    prepGraphs()
 }
 
 // Called when the user picks a secondary metric
 // Calls populateDatepicker and updateChoropleth
 function prepGraphs() {
-    populateDatepicker();
     updateChoropleth();
     updateScatterIfNotEoDB();
 }

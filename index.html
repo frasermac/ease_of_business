@@ -38,7 +38,7 @@
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Metric:</label>
-                        <select class="form-control" id="dataFilter" onmousedown="this.value='';" onchange="prepGraphs()">
+                        <select class="form-control" id="dataFilter" onmousedown="this.value='';" onchange="populateDatepicker()">
                             <option value="CorruptionData">Corruption perception</option>
                             <option value ="LifeExpectancyData">Life expectancy at birth</option>
                             <option value ="MigrationData">Net migration (5yr averages)</option>
@@ -51,7 +51,7 @@
                 <div class="col-lg-3">
                     <div class="form-group">
                         <label>Metric Year:</label>
-                        <select class="form-control" id="metricYear" onmousedown="this.value='';" onchange="yearSelected();">
+                        <select class="form-control" id="metricYear" onmousedown="this.value='';" onchange="prepGraphs();">
                         </select>
                     </div>
                 </div>
