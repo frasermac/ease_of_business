@@ -10,16 +10,16 @@ var generalOverviewText = d3.select("#generalOverview")
     .text("Introduction:")
     .append("p")
     .attr("class","text")
-    .text("Have you ever wondered how ease of business environment is linked to non-business life? " +
-        "Does it affect the corruption perception? Maybe on the contrary, it is affected by the later? " +
-        "How about international migration or life expectancy? We created a tool that lets you explore the " +
-        "World Bank's meticulous data from the past decade, so that you can see for yourself what are the patterns " +
-        "and trends in the 'business friendly' countries.");
+    .text("Have you ever wondered how a country's business climate might relate to its non-business life? " + 
+        "Does it affect the country's perceived of corruption? " + 
+        "How about its international migration, or life expectancy? We created a tool that lets you explore the " + 
+        "World Bank's meticulous data from the past decade, so that you can explore patterns and trends for yourself  " + 
+        "in the 'business friendly' countries.");
 
 // Section 1 - country data
 d3.select("#generalOverview")
     .append("h3")
-    .text("Explore the data - country level");
+    .text("Explore the Data - country level");
 
 // Choropleth description
 var textUnderChoropleth = d3.select("#choropleth")
@@ -111,7 +111,7 @@ d3.select("#descriptionSankey")
 // Section 2 - comparing data sets
 d3.select("#compareDataSets")
     .append("h3")
-    .text("Explore the data - compare data sets")
+    .text("Explore the Data - compare datasets")
     .append("h2")
     .append("p")
     .attr("class","text")

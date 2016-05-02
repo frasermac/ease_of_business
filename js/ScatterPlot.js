@@ -4,8 +4,8 @@
 // SVG drawing area
 
 var margin = {top: 20, right: 20, bottom: 30, left: 80},
-    width = 500 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
+    width = 700 - margin.left - margin.right,
+    height = 350 - margin.top - margin.bottom;
 
 var svg = d3.select("#scatter")
     .append("svg")
